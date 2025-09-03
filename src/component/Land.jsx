@@ -531,7 +531,7 @@ const LandingPage2 = () => {
                 viewport={{ once: true }}
                 variants={fadeIn}
                 custom={index}
-                className="bg-gray-900 rounded-xl border border-gray-800 p-8 text-left hover:bg-gray-800 transition-colors duration-300"
+                className=" rounded-xl border border-green-600 p-8 text-left hover:bg-green-800 transition-colors duration-300"
               >
                 <div className="flex justify-between items-center mb-4">
                   <div className="p-2 rounded-lg bg-green-700/10 border border-green-700/20 text-green-500">
