@@ -22,24 +22,26 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
-import appoint from "../../public/Appointment booking image.png";
-import report from "../../public/Report Genration Image.png";
-import calling from "../../public/Call Feature Image.png";
-import robot from "../../public/robot.png";
+import appoint from "/Appointment booking image.png";
+import report from "/public/Report Genration Image.png";
+import calling from "/public/Call Feature Image.png";
+import robot from "/public/Robots.png";
 
-// You would use Redux or Context for a real app, but for this single component,
-// we'll use local state to manage the theme.
-const LandingPage2 = () => {
-  const [theme, setTheme] = useState("dark"); // Default to dark theme
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut",
+    },
+  },
+};
 
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", theme === "dark");
-    setTheme(theme);
-  }, [theme]);
- 
+const Header = ({ isMenuOpen, setIsMenuOpen, theme, toggleTheme }) => {
   const menuVariants = {
     hidden: { opacity: 0, y: -50 },
     visible: {
@@ -47,11 +49,179 @@ const LandingPage2 = () => {
       y: 0,
       transition: { duration: 0.5, ease: "easeOut" },
     },
-    exit: {
-      opacity: 0,
-      y: -50,
-      transition: { duration: 0.3, ease: "easeIn" },
-    },
+    exit: { opacity: 0, y: -50, transition: { duration: 0.3, ease: "easeIn" } },
+  };
+
+  return (
+    <header className="fixed top-0 z-50 w-full border-b border-gray-800/40 bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/60">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 lg:px-8">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={fadeIn}
+          className="flex items-center space-x-2"
+        >
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-700/10 border border-green-700/20">
+            <span className="text-xl font-bold text-green-500">A</span>
+          </div>
+          <h1 className="text-xl font-bold text-gray-50">Aarogya Mitra</h1>
+        </motion.div>
+
+        <div className="hidden md:flex items-center space-x-6">
+          <nav className="flex items-center space-x-6">
+            <a
+              href="#features"
+              className="text-sm font-medium text-gray-400 hover:text-green-500 transition-colors"
+            >
+              Features
+            </a>
+            <a
+              href="#about"
+              className="text-sm font-medium text-gray-400 hover:text-green-500 transition-colors"
+            >
+              About
+            </a>
+            <a
+              href="#contact"
+              className="text-sm font-medium text-gray-400 hover:text-green-500 transition-colors"
+            >
+              Contact
+            </a>
+          </nav>
+          <button
+            onClick={toggleTheme}
+            className="h-9 w-9 rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center"
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={theme}
+                initial={{ rotate: -180, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: 180, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {theme === "dark" ? (
+                  <SunIcon className="h-5 w-5 text-gray-50" />
+                ) : (
+                  <MoonIcon className="h-5 w-5 text-gray-50" />
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </button>
+          <div className="flex items-center space-x-3">
+            <button className="text-sm font-medium text-gray-50 hover:text-green-500 transition-colors">
+              Login
+            </button>
+            <button className="rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white shadow-md transition-all duration-300 hover:bg-green-600 hover:shadow-lg">
+              Sign Up
+            </button>
+          </div>
+        </div>
+
+        <div className="md:hidden flex items-center space-x-2">
+          <button
+            onClick={toggleTheme}
+            className="h-9 w-9 rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center"
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={theme}
+                initial={{ rotate: -180, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: 180, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {theme === "dark" ? (
+                  <SunIcon className="h-5 w-5 text-gray-50" />
+                ) : (
+                  <MoonIcon className="h-5 w-5 text-gray-50" />
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </button>
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="h-9 w-9 rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center"
+          >
+            {isMenuOpen ? (
+              <X className="h-5 w-5 text-gray-50" />
+            ) : (
+              <Menu className="h-5 w-5 text-gray-50" />
+            )}
+          </button>
+        </div>
+      </div>
+
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={menuVariants}
+            className="md:hidden border-t border-gray-800/40 bg-black/95 backdrop-blur"
+          >
+            <div className="container px-4 py-4 space-y-4">
+              <nav className="flex flex-col space-y-3">
+                <a
+                  href="#features"
+                  className="text-sm font-medium text-gray-400 hover:text-green-500 transition-colors"
+                >
+                  Features
+                </a>
+                <a
+                  href="#about"
+                  className="text-sm font-medium text-gray-400 hover:text-green-500 transition-colors"
+                >
+                  About
+                </a>
+                <a
+                  href="#contact"
+                  className="text-sm font-medium text-gray-400 hover:text-green-500 transition-colors"
+                >
+                  Contact
+                </a>
+              </nav>
+              <div className="flex flex-col space-y-3">
+                <button className="text-sm font-medium text-gray-50 hover:text-green-500 transition-colors text-left">
+                  Login
+                </button>
+                <button className="rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white shadow-md transition-all duration-300 hover:bg-green-600 hover:shadow-lg text-left">
+                  Sign Up
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
+  );
+};
+
+const StatCard = ({ icon, value, label }) => (
+  <motion.div
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true }}
+    variants={fadeIn}
+    className=" rounded-xl border border-green-600 p-8 text-center flex flex-col items-center hover:bg-green-800 transition-colors duration-300"
+  >
+    {icon && <div className="p-2 mb-2">{icon}</div>}
+    <span className="text-4xl font-bold text-green-500">{value}</span>
+    <span className="text-gray-400 text-sm mt-1">{label}</span>
+  </motion.div>
+);
+
+const LandingPage2 = () => {
+  const [theme, setTheme] = useState("dark");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
   };
 
   const slideInRight = {
@@ -64,116 +234,14 @@ const LandingPage2 = () => {
     visible: { opacity: 1, x: 0, transition: { duration: 0.6 } },
   };
 
-  const fadeIn = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 0.8 } },
-  };
-
   return (
-    <div className="min-h-screen bg-black text-white font-sans dark:bg-black dark:text-white transition-colors duration-300">
-      {/* Header */}
-      <header className="fixed top-0 z-50 w-full border-b border-gray-800/40 bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/60 dark:border-gray-800/40 dark:bg-black/95 dark:supports-[backdrop-filter]:bg-black/60">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4 lg:px-8">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeIn}
-            className="flex items-center space-x-2"
-          >
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-700/10 border border-green-700/20">
-              <span className="text-xl font-bold text-green-500">A</span>
-            </div>
-            <h1 className="text-xl font-bold text-gray-50">Aarogya Mitra</h1>
-          </motion.div>
-
-          <div className="hidden md:flex items-center space-x-6">
-            <nav className="flex items-center space-x-6">
-              <a
-                href="#features"
-                className="text-sm font-medium text-gray-400 hover:text-green-500 transition-colors"
-              >
-                Features
-              </a>
-              <a
-                href="#about"
-                className="text-sm font-medium text-gray-400 hover:text-green-500 transition-colors"
-              >
-                About
-              </a>
-              <a
-                href="#contact"
-                className="text-sm font-medium text-gray-400 hover:text-green-500 transition-colors"
-              >
-                Contact
-              </a>
-            </nav>
-            <div className="flex items-center space-x-3">
-              <button className="text-sm font-medium text-gray-50 hover:text-green-500 transition-colors">
-                Login
-              </button>
-              <button className="rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white shadow-md transition-all duration-300 hover:bg-green-600 hover:shadow-lg">
-                Sign Up
-              </button>
-            </div>
-          </div>
-
-          <div className="md:hidden flex items-center space-x-2">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="h-9 w-9 rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center"
-            >
-              {isMenuOpen ? (
-                <X className="h-5 w-5 text-gray-50" />
-              ) : (
-                <Menu className="h-5 w-5 text-gray-50" />
-              )}
-            </button>
-          </div>
-        </div>
-
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              variants={menuVariants}
-              className="md:hidden border-t border-gray-800/40 bg-black/95 backdrop-blur"
-            >
-              <div className="container px-4 py-4 space-y-4">
-                <nav className="flex flex-col space-y-3">
-                  <a
-                    href="#features"
-                    className="text-sm font-medium text-gray-400 hover:text-green-500 transition-colors"
-                  >
-                    Features
-                  </a>
-                  <a
-                    href="#about"
-                    className="text-sm font-medium text-gray-400 hover:text-green-500 transition-colors"
-                  >
-                    About
-                  </a>
-                  <a
-                    href="#contact"
-                    className="text-sm font-medium text-gray-400 hover:text-green-500 transition-colors"
-                  >
-                    Contact
-                  </a>
-                </nav>
-                <div className="flex flex-col space-y-3">
-                  <button className="text-sm font-medium text-gray-50 hover:text-green-500 transition-colors text-left">
-                    Login
-                  </button>
-                  <button className="rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white shadow-md transition-all duration-300 hover:bg-green-600 hover:shadow-lg text-left">
-                    Sign Up
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </header>
+    <div className="min-h-screen bg-black text-white font-sans transition-colors duration-300">
+      <Header
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen}
+        theme={theme}
+        toggleTheme={toggleTheme}
+      />
 
       {/* Hero Section */}
       <main className="flex flex-col items-center justify-center py-24 px-4 text-center min-h-[calc(100vh-64px)]">
@@ -191,15 +259,13 @@ const LandingPage2 = () => {
                 Revolutionary AI Health Assistant
               </span>
             </div>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 tracking-tight text-gray-900 dark:text-white">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 tracking-tight text-white">
               Your Health.
               <span className="text-green-500 block">Orchestrated by AI.</span>
               Your Voice.
-              <span className="text-gray-900 dark:text-white block">
-                Your Future.
-              </span>
+              <span className="text-white block">Your Future.</span>
             </h1>
-            <p className="max-w-3xl text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-10">
+            <p className="max-w-3xl text-lg md:text-xl text-gray-400 mb-10">
               Experience seamless,{" "}
               <strong className="text-green-500">
                 AI-powered health consultations
@@ -215,12 +281,11 @@ const LandingPage2 = () => {
                 Start Your Journey
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </button>
-              <button className="inline-flex items-center justify-center rounded-lg border border-gray-700 px-6 py-3 text-base font-medium text-gray-900 shadow-md transition-all duration-300 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800 dark:border-gray-700">
+              <button className="inline-flex items-center justify-center rounded-lg border border-gray-700 px-6 py-3 text-base font-medium text-white shadow-md transition-all duration-300 hover:bg-gray-800">
                 Watch Demo
               </button>
             </div>
           </motion.div>
-
           {/* Image (Right Side) */}
           <motion.div
             initial="hidden"
@@ -228,50 +293,29 @@ const LandingPage2 = () => {
             variants={fadeIn}
             className="md:w-1/2 flex justify-center"
           >
-            <div
-              className="relative w-full max-w-lg p-1 overflow-hidden rounded-xl shadow-2xl
-              bg-gradient-to-br from-green-500 via-green-700 to-green-900"
-            >
-              {" "}
-              {/* Green gradient border */}
+            <div className="relative w-full max-w-lg p-1 overflow-hidden rounded-xl shadow-2xl ">
               <img
                 src={robot}
                 alt="AI Health Assistant Robots"
-                className="w-full h-full object-cover rounded-xl" // Keep image rounded
+                className="w-full h-full object-cover rounded-xl"
               />
             </div>
           </motion.div>
         </div>
-
-        {/* Statistics Section (below the main hero content) */}
+        {/* Statistics Section */}
         <motion.div
           initial="hidden"
           animate="visible"
           variants={fadeIn}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl pt-16 border-t border-gray-300/50 mt-auto dark:border-gray-800/50"
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl pt-16  border-t border-gray-800/50 mt-auto"
         >
-          <div className="flex flex-col items-center">
-            <span className="text-4xl font-bold text-green-500">10k+</span>
-            <span className="text-gray-600 text-sm mt-1 dark:text-gray-400">
-              Happy Patients
-            </span>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="text-4xl font-bold text-green-500">24/7</span>
-            <span className="text-gray-600 text-sm mt-1 dark:text-gray-400">
-              AI Availability
-            </span>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="text-4xl font-bold text-green-500">99%</span>
-            <span className="text-gray-600 text-sm mt-1 dark:text-gray-400">
-              Accuracy Rate
-            </span>
-          </div>
+          <StatCard value="10k+" label="Happy Patients" />
+          <StatCard value="24/7" label="AI Availability" />
+          <StatCard value="99%" label="Accuracy Rate" />
         </motion.div>
       </main>
-      <hr className="my-16 border-gray-800" />
 
+      <hr className="my-16 border-gray-800" />
       {/* Voice Consultation Section */}
       <section className="py-20 px-4" id="voice-consultation">
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
@@ -288,9 +332,9 @@ const LandingPage2 = () => {
                 AI Voice Consultation
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 tracking-tight">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 tracking-tight text-white">
               Speak Freely. Be
-              <span className="block">Understood.</span>
+              <span className="text-white block">Understood.</span>
               <span className="text-green-500 block">Instantly.</span>
             </h2>
             <p className="max-w-xl text-lg text-gray-400 mb-6">
@@ -327,7 +371,6 @@ const LandingPage2 = () => {
       </section>
 
       <hr className="my-16 border-gray-800" />
-
       {/* Intelligent Reports Section */}
       <section className="py-20 px-4" id="reports">
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
@@ -359,7 +402,7 @@ const LandingPage2 = () => {
                 Intelligent Reports
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 tracking-tight">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 tracking-tight text-white">
               Understand Your Health.
               <span className="text-green-500 block">
                 Instantly Generated. Fully Digital.
@@ -388,7 +431,6 @@ const LandingPage2 = () => {
       </section>
 
       <hr className="my-16 border-gray-800" />
-
       {/* Smart Doctor Matching Section */}
       <section className="py-20 px-4" id="doctor-matching">
         <div className="container mx-auto flex flex-col md:flex-row-reverse items-center justify-between gap-12">
@@ -420,7 +462,7 @@ const LandingPage2 = () => {
                 AI Doctor Matching
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 tracking-tight">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 tracking-tight text-white">
               Smart Referrals. Effortless Booking.
               <span className="text-green-500 block">Managed by AI.</span>
             </h2>
@@ -457,7 +499,6 @@ const LandingPage2 = () => {
       </section>
 
       <hr className="my-16 border-gray-800" />
-
       {/* How It Works Section */}
       <section className="py-20 px-4 text-center" id="how-it-works">
         <div className="container mx-auto">
@@ -473,7 +514,7 @@ const LandingPage2 = () => {
                 AI-Powered Process
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 tracking-tight">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 tracking-tight text-white">
               How Aarogya Mitra <span className="text-green-500">Works</span>
             </h2>
             <p className="max-w-3xl mx-auto text-lg text-gray-400 mb-12">
@@ -481,7 +522,6 @@ const LandingPage2 = () => {
               Every step optimized for your health journey.
             </p>
           </motion.div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {["01", "02", "03", "04"].map((step, index) => (
               <motion.div
@@ -491,10 +531,10 @@ const LandingPage2 = () => {
                 viewport={{ once: true }}
                 variants={fadeIn}
                 custom={index}
-                className="bg-black rounded-xl border border-gray-800 p-8 text-left hover:bg-gray-800 transition-colors duration-300"
+                className="bg-gray-900 rounded-xl border border-gray-800 p-8 text-left hover:bg-gray-800 transition-colors duration-300"
               >
                 <div className="flex justify-between items-center mb-4">
-                  <div className="p-2 rounded-lg bg-black border border-green-500/20 text-green-500">
+                  <div className="p-2 rounded-lg bg-green-700/10 border border-green-700/20 text-green-500">
                     {step === "01" && <Mic className="h-6 w-6" />}
                     {step === "02" && <Code className="h-6 w-6" />}
                     {step === "03" && <FileText className="h-6 w-6" />}
@@ -543,7 +583,7 @@ const LandingPage2 = () => {
                 Join thousands who trust Aarogya Mitra for their health needs
               </p>
             </div>
-            <button className="mt-6 md:mt-0 rounded-lg bg-green-500 px-8 py-4 text-base font-bold text-black shadow-lg transition-all duration-300 hover:bg-green-600 hover:shadow-xl group">
+            <button className="mt-6 md:mt-0 rounded-lg bg-green-500 px-8 py-4 text-base font-bold text-white shadow-lg transition-all duration-300 hover:bg-green-600 hover:shadow-xl group">
               Start Your AI Journey
               <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1 inline-block" />
             </button>
@@ -552,7 +592,6 @@ const LandingPage2 = () => {
       </section>
 
       <hr className="my-16 border-gray-800" />
-
       {/* Trust & Security Section */}
       <section className="py-20 px-4 text-center" id="trust">
         <div className="container mx-auto">
@@ -568,7 +607,7 @@ const LandingPage2 = () => {
                 Trust & Security
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 tracking-tight">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 tracking-tight text-white">
               Your Health Data is{" "}
               <span className="text-green-500">Secured by AI</span>
             </h2>
@@ -578,7 +617,6 @@ const LandingPage2 = () => {
               zero human intervention.
             </p>
           </motion.div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {[
               "AI-Grade Security",
@@ -593,10 +631,10 @@ const LandingPage2 = () => {
                 viewport={{ once: true }}
                 variants={fadeIn}
                 custom={index}
-                className="bg-black rounded-xl border border-green-400 p-8 text-left hover:bg-green-800 transition-colors duration-300"
+                className=" rounded-xl border border-green-400 p-8 text-left hover:bg-green-800 transition-colors duration-300"
               >
                 <div className="flex items-center justify-between mb-4">
-                  <div className="p-2 rounded-lg bg-black border border-green-500/20 text-green-500">
+                  <div className="p-2 rounded-lg bg-green-700/10 border border-green-700/20 text-green-500">
                     {card === "AI-Grade Security" && (
                       <Lock className="h-6 w-6" />
                     )}
@@ -633,7 +671,6 @@ const LandingPage2 = () => {
       </section>
 
       <hr className="my-16 border-gray-800" />
-
       {/* Certified & Compliant Section */}
       <section className="py-20 px-4 text-center" id="certified">
         <div className="container mx-auto">
@@ -651,7 +688,6 @@ const LandingPage2 = () => {
               data security
             </p>
           </motion.div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             {["ISO 27001", "HIPAA", "SOC 2", "GDPR"].map((cert, index) => (
               <motion.div
@@ -661,10 +697,10 @@ const LandingPage2 = () => {
                 viewport={{ once: true }}
                 variants={fadeIn}
                 custom={index}
-                className="bg-black rounded-xl border border-green-800 p-8 text-center flex flex-col items-center hover:bg-green-800 transition-colors duration-300"
+                className=" rounded-xl border border-green-800 p-8 text-center flex flex-col items-center hover:bg-green-800 transition-colors duration-300"
               >
                 <div className="flex items-center justify-center mb-4">
-                  <div className="h-10 w-10 rounded-full bg-black border border-green-500/20 text-green-500 flex items-center justify-center">
+                  <div className="h-10 w-10 rounded-full bg-green-700/10 border border-green-700/20 text-green-500 flex items-center justify-center">
                     <CheckCircle className="h-5 w-5" />
                   </div>
                 </div>
@@ -678,7 +714,6 @@ const LandingPage2 = () => {
               </motion.div>
             ))}
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl mx-auto">
             {["256-bit", "0", "24/7"].map((stat, index) => (
               <motion.div
@@ -688,7 +723,7 @@ const LandingPage2 = () => {
                 viewport={{ once: true }}
                 variants={fadeIn}
                 custom={index}
-                className="bg-black rounded-xl border border-green-800 p-8 text-center flex flex-col items-center hover:bg-green-800 transition-colors duration-300"
+                className=" rounded-xl border border-green-800 p-8 text-center flex flex-col items-center hover:bg-green-800 transition-colors duration-300"
               >
                 {stat === "256-bit" && (
                   <Shield className="h-8 w-8 text-green-500 mb-2" />
@@ -714,9 +749,8 @@ const LandingPage2 = () => {
       </section>
 
       <hr className="my-16 border-gray-800" />
-
       {/* Footer */}
-      <footer className="py-16 px-4">
+      <footer className="py-16 px-4 bg-black">
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Logo and Description */}
           <div className="flex flex-col">
@@ -761,7 +795,6 @@ const LandingPage2 = () => {
               </a>
             </div>
           </div>
-
           {/* Quick Links */}
           <div>
             <h4 className="text-lg font-bold text-gray-50 mb-4">QUICK LINKS</h4>
@@ -797,7 +830,6 @@ const LandingPage2 = () => {
               </li>
             </ul>
           </div>
-
           {/* Support */}
           <div>
             <h4 className="text-lg font-bold text-gray-50 mb-4">SUPPORT</h4>
